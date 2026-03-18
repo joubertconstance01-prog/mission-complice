@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission Complice</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #c8102e;
+  --red-bright: #ff1a3e;
+  --red-dim: #6b0817;
+  --gold: #c9a84c;
+  --gold-light: #e8c86a;
+  --ink: #0a0a0b;
+  --dark: #111115;
+  --panel: #16161c;
+  --panel-light: #1e1e28;
+  --text: #e8e4dc;
+  --text-dim: #8a8070;
+  --border: rgba(200, 16, 46, 0.2);
+}
+
+html, body {
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ── NOISE GRAIN ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.5;
+}
+
+/* ── VIGNETTE ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.8) 100%);
+  pointer-events: none;
+  z-index: 998;
+}
+
+/* ── DIAGONAL LINES BG ── */
+.bg-lines {
+  position: fixed;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -55deg,
+    transparent,
+    transparent 40px,
+    rgba(200,16,46,0.025) 40px,
+    rgba(200,16,46,0.025) 41px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── LAYOUT ── */
+.scene {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* ── CARD ── */
+.card {
+  width: 100%;
+  max-width: 560px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--red), var(--gold), var(--red), transparent);
+}
+
+/* ── CORNER MARKS ── */
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 60px; height: 60px;
+  border-bottom: 2px solid var(--red-dim);
+  border-right: 2px solid var(--red-dim);
+  pointer-events: none;
+}
+
+.card-inner {
+  padding: 48px 44px;
+}
+
+/* ── CASE LABEL ── */
+.case-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.case-label::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--red);
+}
+.case-label::after {
+  content: '';
+  display: inline-block;
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── TITLE ── */
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+h1 span {
+  color: var(--red);
+  display: block;
+}
+
+.subtitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 32px;
+}
+
+/* ── BODY TEXT ── */
+.body-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-dim);
+  margin-bottom: 40px;
+  border-left: 2px solid var(--red-dim);
+  padding-left: 20px;
+}
+
+/* ── BUTTON ── */
+.btn-primary {
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--text);
+  padding: 16px 32px;
+  width: 100%;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--red);
+  transform: translateX(-100%);
+  transition: transform 0.35s cubic-bezier(0.7, 0, 0.3, 1);
+}
+.btn-primary:hover::before { transform: translateX(0); }
+.btn-primary:hover { color: #fff; }
+.btn-primary span { position: relative; z-index: 1; }
+
+/* ── ANSWER BUTTONS ── */
+.btn-answer {
+  background: transparent;
+  border: 1px solid rgba(200, 16, 46, 0.15);
+  border-left: 3px solid var(--red-dim);
+  color: var(--text-dim);
+  padding: 14px 20px;
+  width: 100%;
+  margin-bottom: 10px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+.btn-answer::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--red);
+  transform: scaleY(0);
+  transition: transform 0.25s;
+}
+.btn-answer:hover {
+  border-color: rgba(200,16,46,0.5);
+  color: var(--text);
+  background: rgba(200,16,46,0.06);
+  padding-left: 28px;
+}
+.btn-answer:hover::before { transform: scaleY(1); }
+
+/* ── QUESTION NUMBER ── */
+.q-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+.q-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem;
+  line-height: 1;
+  color: rgba(200,16,46,0.12);
+  letter-spacing: 0.05em;
+}
+.q-counter {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  padding-bottom: 6px;
+}
+
+/* ── PROGRESS BAR ── */
+.progress-track {
+  width: 100%;
+  height: 2px;
+  background: rgba(200,16,46,0.1);
+  margin-bottom: 32px;
+  position: relative;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-dim), var(--red));
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 6px; height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--red);
+}
+
+/* ── QUESTION TEXT ── */
+.question-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+  margin-bottom: 28px;
+  letter-spacing: 0.01em;
+}
+
+/* ── RESULT ── */
+.result-role {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+.result-role .role-label {
+  color: var(--text-dim);
+  font-size: 0.4em;
+  letter-spacing: 0.3em;
+  display: block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.result-role .role-name {
+  color: var(--red);
+}
+
+.result-desc {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-dim);
+  margin: 24px 0;
+  border-left: 2px solid var(--red-dim);
+  padding-left: 20px;
+}
+
+.result-mission {
+  background: rgba(200, 16, 46, 0.06);
+  border: 1px solid rgba(200, 16, 46, 0.2);
+  padding: 20px 24px;
+  margin-top: 28px;
+}
+.result-mission-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.result-mission-label::before {
+  content: '▸';
+  color: var(--red);
+}
+.result-mission p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* ── HIDDEN ── */
+.hidden { display: none; }
+
+/* ── FADE IN ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card { animation: fadeUp 0.6s ease both; }
+
+.fade-in {
+  animation: fadeUp 0.4s ease both;
+}
+
+/* ── STAMP ── */
+.stamp {
+  position: absolute;
+  top: 24px; right: 24px;
+  width: 64px; height: 64px;
+  border: 2px solid rgba(200,16,46,0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: rgba(200,16,46,0.4);
+  text-align: center;
+  line-height: 1.3;
+}
+</style>
+</head>
+<body>
+<div class="bg-lines"></div>
+
+<div class="scene">
+
+  <!-- INTRO -->
+  <div class="card" id="intro">
+    <div class="card-inner">
+      <div class="case-label">Dossier confidentiel</div>
+      <h1>Mission<span>Complice</span></h1>
+      <p class="body-text">
+        Une équipe se forme. Un plan se dessine. Mais dans ce genre d'opération, chaque rôle est crucial.<br><br>
+        Découvre le tien et vois si tu as ce qu'il faut pour réussir le braquage parfait.<br><br>
+        Prépare-toi : il n'y aura pas de seconde chance.
+      </p>
+      <button class="btn-primary" id="startBtn"><span>↳ Lancer la mission</span></button>
+    </div>
+    <div class="stamp">CONFIDENTIEL</div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card hidden" id="quiz">
+    <div class="card-inner" id="quizInner">
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="card hidden" id="result">
+    <div class="card-inner" id="resultInner">
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── QUESTIONS ── map: [A→profil, B→profil, C→profil, D→profil]
+// S=Stratège, L=Leader, B=Brute, G=Gestionnaire, H=Hacker
+const questions = [
+  { q: "L'entrée est compromise. Que fais-tu ?",
+    a: ["J'analyse les sorties alternatives en quelques secondes","Je prends le contrôle et redirige tout le monde","Je force le passage sans hésiter","Je sécurise les ressources avant de bouger"],
+    map: ['S','L','B','G'] },
+  { q: "Un membre de l'équipe panique en pleine opération",
+    a: ["Je le recadre calmement avec des instructions précises","Je prends sa place immédiatement","Je lui ordonne de se taire et d'avancer","J'évalue s'il devient un risque pour la mission"],
+    map: ['S','L','B','G'] },
+  { q: "Le plan ne se déroule pas comme prévu",
+    a: ["J'adapte la stratégie en temps réel","Je décide d'un nouveau plan et je l'impose","Je continue malgré tout, coûte que coûte","Je protège ce qui peut encore être sauvé"],
+    map: ['S','L','B','G'] },
+  { q: "Une opportunité imprévue apparaît",
+    a: ["Je calcule le risque avant d'agir","Je tranche rapidement pour en tirer avantage","Je saute dessus sans réfléchir","J'évalue l'impact sur l'objectif principal"],
+    map: ['S','L','B','G'] },
+  { q: "Tu dois infiltrer un lieu sous surveillance",
+    a: ["J'identifie les failles du système","Je coordonne l'entrée avec précision","Je passe en force si nécessaire","Je m'assure que tout est parfaitement synchronisé"],
+    map: ['H','L','B','G'] },
+  { q: "Un compte à rebours est lancé",
+    a: ["Je garde mon sang-froid et optimise chaque seconde","Je donne des ordres clairs et rapides","J'accélère tout, peu importe les risques","Je sécurise l'essentiel avant la fin"],
+    map: ['S','L','B','G'] },
+  { q: "Un inconnu propose son aide",
+    a: ["Je teste sa fiabilité discrètement","Je décide rapidement de l'intégrer ou non","Je le repousse violemment","J'analyse ce qu'il peut apporter concrètement"],
+    map: ['S','L','B','G'] },
+  { q: "L'équipe est divisée sur une décision",
+    a: ["Je propose une solution rationnelle","Je tranche et impose la direction","Je fais pression pour faire avancer","Je cherche un compromis efficace"],
+    map: ['S','L','B','G'] },
+  { q: "Une alarme se déclenche",
+    a: ["Je cherche immédiatement l'origine","Je dirige l'évacuation","Je neutralise la menace","Je sécurise les gains"],
+    map: ['H','L','B','G'] },
+  { q: "À la fin de l'opération, que fais-tu ?",
+    a: ["J'analyse ce qui aurait pu être amélioré","Je m'assure que chacun a suivi mes directives","Je vérifie que personne ne nous suit","Je fais le bilan des ressources obtenues"],
+    map: ['S','L','H','G'] }
+];
+
+// ── RÔLES ──
+const MISSION = "Un coffre s'est posé sur la plus grande place de ta ville. Sois attentif aux affiches pour découvrir le code et l'ouvrir.<br><br>Tu as jusqu'au 25 avril pour tester le code que tu auras trouvé.<br><br>Chaque rôle a sa clé… Seras-tu assez perspicace pour la découvrir ?";
+
+const roleData = {
+  S: { name: 'Le Stratège',
+    desc: ["Tu es désormais un complice du braquage.", "Ton esprit est ton arme principale. Là où d'autres voient du chaos, tu vois des schémas, des failles, des opportunités.", "Tu as été choisi pour anticiper l'imprévisible et ajuster chaque mouvement avant même qu'il ne devienne nécessaire.", "Dans l'équipe, tu es celui qu'on consulte avant d'agir… et celui qui évite les erreurs fatales.", "Sans toi, il n'y a pas de plan. Et sans plan, il n'y a pas de sortie."] },
+  L: { name: 'Le Leader',
+    desc: ["Tu es désormais un complice du braquage.", "Quand la pression monte, tous les regards se tournent vers toi. Tu décides. Tu imposes. Tu assumes.", "Tu as été sélectionné pour ta capacité à garder le contrôle là où les autres vacillent.", "Dans l'équipe, tu es la voix qui tranche et la présence qui stabilise.", "Ce braquage avancera à ton rythme. Et personne ne remettra ça en question."] },
+  B: { name: 'La Brute',
+    desc: ["Tu es désormais un complice du braquage.", "Tu es l'impact. La force brute. Le moment où tout bascule.", "Tu as été choisi parce que tu agis là où d'autres hésitent. Tu avances, tu frappes, tu ouvres la voie.", "Dans l'équipe, tu es la solution quand il n'y en a plus.", "Quand la situation dégénère… c'est là que tu deviens indispensable."] },
+  G: { name: 'Le Gestionnaire',
+    desc: ["Tu es désormais un complice du braquage.", "Tu ne laisses rien au hasard. Ressources, timing, logistique : tout passe par toi.", "Tu as été sélectionné pour ta rigueur et ta capacité à garder le contrôle sur ce qui compte vraiment.", "Dans l'équipe, tu es celui qui garantit que l'opération reste viable jusqu'au bout.", "Sans toi, le braquage réussit peut-être… mais il ne tient jamais."] },
+  H: { name: 'Le Hacker',
+    desc: ["Tu es désormais un complice du braquage.", "Les systèmes, les sécurités, les barrières… ne sont pour toi que des illusions à contourner.", "Tu as été choisi pour ton intelligence froide et ta capacité à infiltrer sans laisser de trace.", "Dans l'équipe, tu es invisible mais essentiel.", "Quand une porte est fermée, tu ne la forces pas. Tu la fais disparaître."] },
+  I: { name: "L'Imprévisible",
+    desc: ["Tu es désormais un complice du braquage.", "Impossible à lire. Impossible à anticiper. Et c'est exactement pour ça que tu es là.", "Tu as été sélectionné parce que tu brises les schémas et déstabilises tout ce qui est trop prévisible.", "Dans l'équipe, tu es le facteur chaos… celui qui fait basculer une situation bloquée.", "On ne sait jamais ce que tu vas faire. Mais on sait que ça peut tout changer."] }
+};
+
+// ── ÉTAT ──
+const LETTERS = ['A','B','C','D'];
+let current = 0;
+let answers = [];
+
+// ── LOGIQUE D'ATTRIBUTION ──
+function computeRole() {
+  const score = { S:0, L:0, B:0, G:0, H:0 };
+  answers.forEach(p => { if (p in score) score[p]++; });
+
+  const maxScore = Math.max(...Object.values(score));
+  const winners = Object.keys(score).filter(k => score[k] === maxScore);
+  const profilesUsed = Object.keys(score).filter(k => score[k] > 0);
+
+  // L'Imprévisible : aucun profil dominant (max ≤ 3) ET au moins 3 profils différents
+  if (maxScore <= 3 && profilesUsed.length >= 3) return 'I';
+
+  // Le Hacker : H est dans les gagnants ET a au moins 2 votes
+  if (winners.includes('H') && score['H'] >= 2) return 'H';
+
+  // Priorité en cas d'égalité : S > L > B > G > H
+  for (const p of ['S','L','B','G','H']) {
+    if (winners.includes(p)) return p;
+  }
+  return 'S';
+}
+
+// ── AFFICHAGE QUESTION ──
+function showQuestion() {
+  if (current >= questions.length) { showResult(); return; }
+
+  const q = questions[current];
+  const pct = (current / questions.length) * 100;
+  const inner = document.getElementById('quizInner');
+  const num = String(current + 1).padStart(2, '0');
+
+  inner.innerHTML = `
+    <div class="fade-in">
+      <div class="case-label">Situation ${current + 1}</div>
+      <div class="q-meta">
+        <div class="q-number">${num}</div>
+        <div class="q-counter">${current + 1} / ${questions.length}</div>
+      </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="question-text">${q.q}</div>
+    </div>`;
+
+  q.a.forEach((ans, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-answer fade-in';
+    btn.style.animationDelay = `${0.05 * i + 0.1}s`;
+    btn.innerHTML = `<strong style="font-family:'Barlow Condensed';font-size:11px;letter-spacing:0.2em;color:var(--red);margin-right:12px;">${LETTERS[i]}.</strong>${ans}`;
+    btn.onclick = () => {
+      answers.push(q.map[i]);
+      current++;
+      showQuestion();
+    };
+    inner.appendChild(btn);
+  });
+}
+
+// ── AFFICHAGE RÉSULTAT ──
+function showResult() {
+  document.getElementById('quiz').classList.add('hidden');
+  const key = computeRole();
+  const data = roleData[key];
+  const descHTML = data.desc.map(line => `<p style="margin-bottom:10px;">${line}</p>`).join('');
+
+  const resultDiv = document.getElementById('result');
+  resultDiv.classList.remove('hidden');
+  document.getElementById('resultInner').innerHTML = `
+    <div class="fade-in">
+      <div class="case-label">Identité confirmée</div>
+      <div class="result-role">
+        <span class="role-label">Ton rôle</span>
+        <span class="role-name">${data.name}</span>
+      </div>
+      <div class="result-desc">${descHTML}</div>
+      <div class="result-mission">
+        <div class="result-mission-label">Prochaine mission</div>
+        <p>${MISSION}</p>
+        <a href="https://www.instagram.com/netflixfr/" target="_blank" rel="noopener" style="display:inline-block;margin-top:16px;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,0.4);padding-bottom:2px;transition:color 0.2s,border-color 0.2s;" onmouseover="this.style.color='var(--gold-light)';this.style.borderColor='var(--gold-light)'" onmouseout="this.style.color='var(--gold)';this.style.borderColor='rgba(201,168,76,0.4)'">↳ Abonne-toi à l'Instagram Netflix pour rejoindre le canal</a>
+      </div>
+      <div style="margin-top:20px;text-align:center;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px;">Partage ton rôle</div>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:center;">
+          <!-- X / Twitter logo -->
+          <a href="#" onclick="return false;" aria-label="Partager sur X" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(200,16,46,0.3);color:var(--text-dim);text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='rgba(200,16,46,0.3)';this.style.color='var(--text-dim)'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <!-- Facebook logo -->
+          <a href="#" onclick="return false;" aria-label="Partager sur Facebook" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(200,16,46,0.3);color:var(--text-dim);text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='rgba(200,16,46,0.3)';this.style.color='var(--text-dim)'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <!-- Instagram logo -->
+          <a href="#" onclick="return false;" aria-label="Partager sur Instagram" style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(200,16,46,0.3);color:var(--text-dim);text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='rgba(200,16,46,0.3)';this.style.color='var(--text-dim)'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── PARTAGE ──
+function shareRole(roleName, platform) {
+  const text = `Je viens de découvrir mon rôle dans Mission Complice : ${roleName} 🎯 Et toi, quel est le tien ? #MissionComplice #Netflix`;
+  const url = window.location.href;
+  if (platform === 'twitter') {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+  } else if (platform === 'facebook') {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`, '_blank');
+  } else if (platform === 'copy') {
+    navigator.clipboard.writeText(text + ' ' + url).then(() => {
+      const btn = document.getElementById('copyBtn');
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copié !';
+      btn.style.borderColor = 'var(--gold)';
+      btn.style.color = 'var(--gold)';
+      setTimeout(() => { btn.textContent = orig; btn.style.borderColor = 'rgba(200,16,46,0.3)'; btn.style.color = 'var(--text-dim)'; }, 2000);
+    });
+  }
+}
+
+// ── START ──
+document.getElementById('startBtn').onclick = () => {
+  document.getElementById('intro').classList.add('hidden');
+  const quiz = document.getElementById('quiz');
+  quiz.classList.remove('hidden');
+  quiz.style.animation = 'none';
+  void quiz.offsetHeight;
+  quiz.style.animation = '';
+  showQuestion();
+};
+</script>
+</body>
+</html>
