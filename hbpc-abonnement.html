@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abonnement HBPC – Rejoins les Guerrières</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --jaune:       #efc720;
+    --jaune-clair: #f5d84a;
+    --jaune-sombre:#c9a810;
+    --noir:        #000000;
+    --noir-doux:   #0d0d0d;
+    --gris-fonce:  #141414;
+    --gris-moyen:  #222222;
+    --gris-mid:    #333333;
+    --gris-clair:  #888888;
+    --blanc:       #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--noir);
+    color: var(--blanc);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ══ STICKY NAV ══════════════════════════════════ */
+  .sticky-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    background: rgba(0,0,0,0.96);
+    backdrop-filter: blur(16px);
+    border-bottom: 2px solid var(--jaune);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 48px;
+    transform: translateY(-100%);
+    transition: transform 0.4s cubic-bezier(.16,1,.3,1);
+  }
+  .sticky-bar.visible { transform: translateY(0); }
+  .sticky-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem; letter-spacing: 3px; color: var(--blanc);
+  }
+  .sticky-logo em { color: var(--jaune); font-style: normal; }
+  .sticky-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gris-clair);
+  }
+  .sticky-cta {
+    background: var(--jaune); color: var(--noir);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem; letter-spacing: 2px;
+    padding: 10px 30px; text-decoration: none;
+    transition: background 0.2s, transform 0.2s; display: inline-block;
+  }
+  .sticky-cta:hover { background: var(--jaune-clair); transform: translateY(-2px); }
+
+  /* ══ HERO ════════════════════════════════════════ */
+  .hero {
+    min-height: 100vh; position: relative;
+    display: flex; align-items: center;
+    overflow: hidden; background: var(--noir);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 48%; height: 100%;
+    background: var(--jaune);
+    clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+    z-index: 0;
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    max-width: 1200px; margin: 0 auto;
+    padding: 0 48px; width: 100%; gap: 0;
+  }
+  .hero-left { padding-right: 40px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--jaune); margin-bottom: 24px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .eyebrow-line { width: 32px; height: 2px; background: var(--jaune); }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 9vw, 8.5rem);
+    line-height: 0.92; letter-spacing: 1px;
+    color: var(--blanc);
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero-title .outline { -webkit-text-stroke: 2px var(--blanc); color: transparent; }
+  .hero-title .j { color: var(--jaune); }
+  .hero-subtitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.15rem; font-style: italic; font-weight: 400;
+    color: rgba(255,255,255,0.65);
+    margin: 22px 0 36px; max-width: 420px; line-height: 1.65;
+    animation: fadeUp 0.8s 0.22s ease both;
+  }
+  .hero-cta-group {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.35s ease both;
+  }
+  .btn-primary {
+    background: var(--jaune); color: var(--noir);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem; letter-spacing: 2px;
+    padding: 16px 44px; border: none; cursor: pointer;
+    text-decoration: none; display: inline-block; transition: all 0.25s;
+  }
+  .btn-primary:hover { background: var(--jaune-clair); transform: translateY(-3px); box-shadow: 0 12px 36px rgba(239,199,32,0.35); }
+  .btn-outline {
+    background: transparent; color: var(--blanc);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem; letter-spacing: 2px;
+    padding: 14px 40px; border: 2px solid rgba(255,255,255,0.3);
+    cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.25s;
+  }
+  .btn-outline:hover { border-color: var(--blanc); background: rgba(255,255,255,0.06); }
+  .hero-urgency {
+    margin-top: 28px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--jaune); display: flex; align-items: center; gap: 10px;
+    animation: fadeUp 0.8s 0.48s ease both;
+  }
+  .urgency-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--jaune); animation: blink 1.6s ease-in-out infinite; }
+
+  .hero-right {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 60px 20px 60px 60px;
+    animation: fadeUp 0.8s 0.25s ease both;
+  }
+  .hero-badge {
+    background: var(--noir); color: var(--blanc);
+    text-align: center; padding: 44px 48px;
+  }
+  .badge-club {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem; letter-spacing: 6px;
+    color: var(--jaune); margin-bottom: 4px;
+  }
+  .badge-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.6rem; letter-spacing: 2px; line-height: 1; margin-bottom: 20px;
+  }
+  .badge-divider { width: 40px; height: 3px; background: var(--jaune); margin: 0 auto 20px; }
+  .badge-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--gris-moyen); }
+  .badge-stat { background: var(--gris-fonce); padding: 18px 12px; text-align: center; }
+  .badge-stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--jaune); line-height: 1; }
+  .badge-stat-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gris-clair); margin-top: 3px; }
+  .badge-league {
+    margin-top: 20px; background: var(--gris-fonce); padding: 12px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); text-align: center; border-top: 2px solid var(--jaune);
+  }
+  .hero-scroll {
+    position: absolute; bottom: 32px; left: 48px;
+    display: flex; align-items: center; gap: 12px;
+    opacity: 0.4; z-index: 2;
+    animation: fadeUp 1s 0.8s ease both;
+  }
+  .hero-scroll span { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; }
+  .scroll-line { width: 40px; height: 1px; background: var(--blanc); animation: scrollPulse 2.2s ease-in-out infinite; }
+
+  /* ══ BASE SECTIONS ════════════════════════════════ */
+  section { padding: 100px 24px; }
+  .container { max-width: 1160px; margin: 0 auto; }
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--jaune); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-label::before { content: ''; width: 28px; height: 2px; background: var(--jaune); }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.2rem); line-height: 0.95;
+    letter-spacing: 1px; margin-bottom: 20px;
+  }
+  .section-title .j { color: var(--jaune); }
+  .section-intro { font-size: 1.05rem; color: rgba(255,255,255,0.6); max-width: 580px; line-height: 1.75; }
+
+  /* ══ STATS BAND ═══════════════════════════════════ */
+  .stats-band { background: var(--jaune); padding: 0; }
+  .stats-inner {
+    max-width: 1160px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+  }
+  .stat-item { padding: 36px 28px; text-align: center; border-right: 1px solid rgba(0,0,0,0.12); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 3.4rem; color: var(--noir); line-height: 1; }
+  .stat-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(0,0,0,0.55); margin-top: 3px; }
+
+  /* ══ VALEUR ═══════════════════════════════════════ */
+  .valeur-section { background: var(--gris-fonce); }
+  .valeur-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 56px; background: var(--gris-moyen); }
+  .valeur-card {
+    background: var(--gris-fonce); padding: 44px 36px;
+    position: relative; overflow: hidden; transition: background 0.3s;
+  }
+  .valeur-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: var(--jaune);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
+  }
+  .valeur-card:hover { background: #1c1c1c; }
+  .valeur-card:hover::after { transform: scaleX(1); }
+  .valeur-icon { font-size: 2rem; margin-bottom: 18px; display: block; }
+  .valeur-card h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--blanc); margin-bottom: 10px; }
+  .valeur-card p { font-size: 0.92rem; color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+  /* ══ ABONNEMENT ═══════════════════════════════════ */
+  .abonnement-section { background: var(--noir); }
+  .plans-intro { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 56px; gap: 32px; flex-wrap: wrap; }
+  .plans-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--gris-moyen); }
+  .plan-card {
+    background: var(--gris-fonce); padding: 40px 28px 36px;
+    display: flex; flex-direction: column;
+    position: relative; transition: background 0.3s, transform 0.3s;
+  }
+  .plan-card:hover { background: #1a1a1a; }
+  .plan-card.featured { background: var(--jaune); transform: translateY(-10px); z-index: 2; }
+  .plan-card.featured:hover { background: var(--jaune-clair); transform: translateY(-16px); }
+  .plan-card.featured * { color: var(--noir) !important; }
+  .plan-best {
+    position: absolute; top: -1px; left: 0; right: 0;
+    background: var(--noir); color: var(--jaune) !important;
+    font-family: 'Bebas Neue', sans-serif; font-size: 0.72rem;
+    letter-spacing: 3px; text-align: center; padding: 6px 0; text-transform: uppercase;
+  }
+  .plan-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; letter-spacing: 2px; margin-bottom: 4px; color: var(--blanc); }
+  .plan-tagline { font-size: 0.82rem; opacity: 0.6; margin-bottom: 26px; font-style: italic; }
+  .plan-price { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; line-height: 1; color: var(--blanc); }
+  .plan-price sup { font-size: 1.6rem; vertical-align: super; }
+  .plan-price-note { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; letter-spacing: 1px; opacity: 0.55; margin-bottom: 28px; }
+  .plan-sep { height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 22px; }
+  .plan-sep.dark { background: rgba(0,0,0,0.15); }
+  .plan-features { list-style: none; flex: 1; margin-bottom: 28px; }
+  .plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.88rem; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05); line-height: 1.4; color: rgba(255,255,255,0.75); }
+  .plan-card.featured .plan-features li { border-bottom-color: rgba(0,0,0,0.08); color: var(--noir); }
+  .plan-features li:last-child { border-bottom: none; }
+  .fi { font-size: 0.85rem; flex-shrink: 0; }
+  .fi.yes { color: #3cb564; }
+  .fi.no { opacity: 0.25; }
+  .fi.star { color: var(--jaune); }
+  .plan-card.featured .fi.yes { color: #1a5c2a; }
+  .plan-card.featured .fi.star { color: var(--noir); }
+  .plan-btn { display: block; text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 2px; padding: 13px; text-decoration: none; cursor: pointer; border: none; transition: all 0.25s; }
+  .plan-btn-outline { background: transparent; color: var(--blanc); border: 1px solid rgba(255,255,255,0.2); }
+  .plan-btn-outline:hover { border-color: var(--blanc); background: rgba(255,255,255,0.06); }
+  .plan-btn-noir { background: var(--noir); color: var(--blanc); }
+  .plan-btn-noir:hover { background: #111; }
+  .plan-saving { text-align: center; margin-top: 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 1px; color: rgba(0,0,0,0.6); }
+  .tarif-box {
+    margin-top: 28px; background: var(--gris-fonce);
+    border-left: 4px solid var(--jaune); padding: 24px 36px;
+    display: flex; align-items: center; gap: 32px; flex-wrap: wrap; justify-content: space-between;
+  }
+  .tarif-info { display: flex; align-items: center; gap: 20px; }
+  .tarif-price { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--jaune); line-height: 1; }
+  .tarif-text h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 3px; }
+  .tarif-text p { font-size: 0.85rem; opacity: 0.5; }
+
+  /* ══ AVANTAGES ════════════════════════════════════ */
+  .avantages-section { background: var(--gris-fonce); }
+  .avantages-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 60px; }
+  .avantage-list { display: flex; flex-direction: column; }
+  .avantage-item { display: flex; gap: 22px; padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.06); transition: padding-left 0.3s ease; }
+  .avantage-item:hover { padding-left: 10px; }
+  .av-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: rgba(239,199,32,0.2); line-height: 1; flex-shrink: 0; width: 40px; }
+  .av-text h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; color: var(--blanc); }
+  .av-text p { font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 1.65; }
+  .calcul-box { position: sticky; top: 100px; background: var(--noir); border: 1px solid rgba(239,199,32,0.2); overflow: hidden; }
+  .calcul-header { background: var(--jaune); padding: 20px 32px; font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; color: var(--noir); }
+  .calcul-body { padding: 28px 32px; }
+  .calc-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.9rem; }
+  .calc-row:last-of-type { border-bottom: none; }
+  .calc-lbl { color: rgba(255,255,255,0.5); }
+  .calc-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 1rem; }
+  .calc-total { background: var(--gris-fonce); padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--jaune); }
+  .calc-total-lbl { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 1px; }
+  .calc-total-val { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--jaune); }
+  .fidelite-note { padding: 16px 32px; background: rgba(239,199,32,0.07); font-size: 0.82rem; color: rgba(239,199,32,0.8); line-height: 1.55; border-top: 1px solid rgba(239,199,32,0.15); }
+
+  /* ══ TÉMOIGNAGES ══════════════════════════════════ */
+  .temoignages-section { background: var(--noir); }
+  .temo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--gris-moyen); margin-top: 56px; }
+  .temo-card { background: var(--gris-fonce); padding: 36px 32px; position: relative; overflow: hidden; }
+  .temo-card::before { content: '"'; position: absolute; top: -20px; right: 16px; font-family: 'Bebas Neue', sans-serif; font-size: 9rem; color: var(--jaune); opacity: 0.07; line-height: 1; pointer-events: none; }
+  .temo-stars { color: var(--jaune); font-size: 0.78rem; letter-spacing: 3px; margin-bottom: 14px; }
+  .temo-text { font-style: italic; font-size: 0.97rem; line-height: 1.78; color: rgba(255,255,255,0.78); margin-bottom: 26px; position: relative; }
+  .temo-author { display: flex; align-items: center; gap: 14px; }
+  .temo-avatar { width: 40px; height: 40px; background: var(--jaune); color: var(--noir); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1rem; flex-shrink: 0; }
+  .temo-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.92rem; letter-spacing: 1px; text-transform: uppercase; }
+  .temo-since { font-size: 0.76rem; color: var(--gris-clair); margin-top: 2px; }
+  .temo-vedette { grid-column: span 3; background: var(--gris-fonce); border-top: 3px solid var(--jaune); padding: 56px 64px; display: grid; grid-template-columns: 1fr auto; gap: 60px; align-items: center; }
+  .temo-vedette .temo-text { font-size: 1.2rem; }
+
+  /* ══ EXPÉRIENCE ═══════════════════════════════════ */
+  .experience-section { background: var(--gris-fonce); }
+  .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--gris-moyen); margin-top: 56px; }
+  .exp-left { background: var(--noir); padding: 60px 52px; position: relative; overflow: hidden; }
+  .exp-left::before { content: '#TEAMGUERRIÈRES'; position: absolute; bottom: -10px; left: -5px; font-family: 'Bebas Neue', sans-serif; font-size: 4.5rem; color: var(--jaune); opacity: 0.04; line-height: 1; letter-spacing: 3px; pointer-events: none; white-space: nowrap; }
+  .exp-left h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; letter-spacing: 1px; margin-bottom: 16px; }
+  .exp-left p { color: rgba(255,255,255,0.6); line-height: 1.75; max-width: 440px; margin-bottom: 32px; font-size: 0.97rem; }
+  .exp-right { display: flex; flex-direction: column; gap: 1px; background: var(--gris-moyen); }
+  .exp-perk { background: var(--gris-fonce); padding: 26px 30px; display: flex; align-items: flex-start; gap: 18px; transition: background 0.3s, padding-left 0.3s; flex: 1; }
+  .exp-perk:hover { background: #1c1c1c; padding-left: 42px; }
+  .exp-perk-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 1px; }
+  .exp-perk h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 0.98rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .exp-perk p { font-size: 0.83rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
+
+  /* ══ CTA ══════════════════════════════════════════ */
+  .cta-section { background: var(--jaune); text-align: center; padding: 120px 24px; position: relative; overflow: hidden; }
+  .cta-section::before { content: 'GUERRIÈRES'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Bebas Neue', sans-serif; font-size: 18vw; color: rgba(0,0,0,0.055); pointer-events: none; white-space: nowrap; letter-spacing: 6px; line-height: 1; }
+  .cta-content { position: relative; z-index: 1; }
+  .cta-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(0,0,0,0.5); margin-bottom: 16px; }
+  .cta-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 9vw, 7.5rem); line-height: 0.92; letter-spacing: 2px; color: var(--noir); margin-bottom: 20px; }
+  .cta-section p { font-size: 1.1rem; max-width: 500px; margin: 0 auto 40px; color: rgba(0,0,0,0.65); line-height: 1.7; }
+  .btn-noir { background: var(--noir); color: var(--jaune); font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 3px; padding: 18px 56px; border: none; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.25s; }
+  .btn-noir:hover { background: #222; transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.3); }
+  .cta-note { font-size: 0.82rem; color: rgba(0,0,0,0.45); margin-top: 18px; letter-spacing: 0.5px; }
+  .urgency-band { display: inline-flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.1); padding: 9px 24px; margin-bottom: 32px; font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(0,0,0,0.7); }
+
+  /* ══ FAQ ══════════════════════════════════════════ */
+  .faq-section { background: var(--noir-doux); }
+  .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--gris-moyen); margin-top: 56px; }
+  .faq-item { background: var(--gris-fonce); padding: 32px 36px; cursor: pointer; transition: background 0.3s; }
+  .faq-item:hover { background: #1c1c1c; }
+  .faq-q { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.02rem; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; color: var(--blanc); }
+  .faq-q-icon { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--jaune); flex-shrink: 0; line-height: 1; }
+  .faq-a { font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 1.75; }
+
+  /* ══ FOOTER ═══════════════════════════════════════ */
+  footer { background: var(--noir); border-top: 3px solid var(--jaune); padding: 0; }
+  .footer-top { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding: 60px 24px 50px; }
+  .footer-brand .footer-logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; letter-spacing: 4px; margin-bottom: 6px; }
+  .footer-brand .footer-logo-text em { color: var(--jaune); font-style: normal; }
+  .footer-brand .footer-sub { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gris-clair); margin-bottom: 20px; }
+  .footer-brand p { font-size: 0.88rem; color: rgba(255,255,255,0.4); line-height: 1.65; max-width: 260px; }
+  .footer-col h5 { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--jaune); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid rgba(239,199,32,0.2); }
+  .footer-col a { display: block; color: rgba(255,255,255,0.45); font-size: 0.88rem; text-decoration: none; padding: 5px 0; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--blanc); }
+  .footer-socials { display: flex; gap: 10px; margin-top: 20px; }
+  .social-btn { width: 36px; height: 36px; background: var(--gris-fonce); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 0.75rem; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; color: var(--gris-clair); transition: background 0.2s, color 0.2s; }
+  .social-btn:hover { background: var(--jaune); color: var(--noir); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding: 20px 24px; max-width: 1160px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: rgba(255,255,255,0.2); }
+  .footer-bottom a { color: rgba(255,255,255,0.25); text-decoration: none; }
+
+  /* ══ ANIMATIONS ═══════════════════════════════════ */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.4); opacity: 0.2; } }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ══ RESPONSIVE ═══════════════════════════════════ */
+  @media (max-width: 960px) {
+    .hero-content { grid-template-columns: 1fr; text-align: center; padding: 80px 24px; }
+    .hero::before { display: none; }
+    .hero-subtitle { max-width: 100%; margin-left: auto; margin-right: auto; }
+    .hero-cta-group { justify-content: center; }
+    .hero-urgency { justify-content: center; }
+    .hero-right { padding: 40px 0 0; }
+    .plans-grid { grid-template-columns: 1fr 1fr; }
+    .plan-card.featured { transform: none; }
+    .valeur-grid { grid-template-columns: 1fr; }
+    .avantages-layout { grid-template-columns: 1fr; gap: 40px; }
+    .calcul-box { position: static; }
+    .temo-grid { grid-template-columns: 1fr; }
+    .temo-vedette { grid-column: span 1; grid-template-columns: 1fr; gap: 28px; padding: 40px 32px; }
+    .exp-grid { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
+    .sticky-bar { padding: 10px 20px; }
+    .hero-scroll { display: none; }
+  }
+  @media (max-width: 600px) {
+    section { padding: 70px 16px; }
+    .plans-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .hero-title { font-size: 3.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ STICKY NAV ══════════════════════════════════ -->
+<nav class="sticky-bar" id="stickyBar">
+  <div>
+    <div class="sticky-logo"><em>HB</em>PC</div>
+    <div class="sticky-tagline">Handball Plan-de-Cuques · Ligue Butagaz Énergie</div>
+  </div>
+  <a href="#abonnement" class="sticky-cta">Je m'abonne — dès 65€</a>
+</nav>
+
+<!-- ══ HÉRO ════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-line"></span>
+        Saison 2025–2026 · Gymnase des Ambrosis
+      </div>
+      <h1 class="hero-title">
+        ENTRE<br>
+        DANS LA<br>
+        <span class="j">TEAM</span><br>
+        <span class="outline">GUERRIÈRES</span>
+      </h1>
+      <p class="hero-subtitle">
+        Un abonnement HBPC, c'est plus qu'une place assise.
+        C'est vivre chaque match aux côtés de nos Guerrières — de la première à la dernière seconde.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#abonnement" class="btn-primary">S'abonner maintenant</a>
+        <a href="#avantages" class="btn-outline">Voir les avantages</a>
+      </div>
+      <div class="hero-urgency">
+        <span class="urgency-dot"></span>
+        Places en nombre limité · Saison bientôt lancée
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-badge">
+        <div class="badge-club">#TeamGuerrières</div>
+        <div class="badge-name">HANDBALL<br>PLAN-DE-CUQUES</div>
+        <div class="badge-divider"></div>
+        <div class="badge-stats">
+          <div class="badge-stat">
+            <div class="badge-stat-num">1992</div>
+            <div class="badge-stat-label">Fondé en</div>
+          </div>
+          <div class="badge-stat">
+            <div class="badge-stat-num">400+</div>
+            <div class="badge-stat-label">Licenciées</div>
+          </div>
+          <div class="badge-stat">
+            <div class="badge-stat-num">6</div>
+            <div class="badge-stat-label">Saisons élite</div>
+          </div>
+        </div>
+        <div class="badge-league">Ligue Butagaz Énergie · 1ère Division Française</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Découvrir</span>
+  </div>
+</section>
+
+<!-- ══ STATS BAND ══════════════════════════════════ -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-item reveal"><div class="stat-num">17</div><div class="stat-lbl">Matchs à domicile</div></div>
+    <div class="stat-item reveal"><div class="stat-num">65€</div><div class="stat-lbl">Abonnement Club</div></div>
+    <div class="stat-item reveal"><div class="stat-num">×2</div><div class="stat-lbl">Points fidélité</div></div>
+    <div class="stat-item reveal"><div class="stat-num">10%</div><div class="stat-lbl">Réduction boutique</div></div>
+  </div>
+</div>
+
+<!-- ══ VALEUR ══════════════════════════════════════ -->
+<section class="valeur-section" id="valeur">
+  <div class="container">
+    <div class="section-label">Pourquoi s'abonner</div>
+    <h2 class="section-title reveal">PLUS QU'UN BILLET,<br><span class="j">UNE APPARTENANCE.</span></h2>
+    <p class="section-intro reveal">S'abonner au HBPC, c'est rejoindre une famille. Celle des Guerrières, de leurs supporters, de toutes celles et ceux qui croient que le handball féminin mérite sa place au sommet. Depuis le gymnase du Bocage à l'élite nationale — ce projet, c'est aussi le vôtre.</p>
+    <div class="valeur-grid">
+      <div class="valeur-card reveal">
+        <span class="valeur-icon">🎟️</span>
+        <h3>Tous les matchs à domicile</h3>
+        <p>Votre place réservée pour toute la saison au Gymnase des Ambrosis. Ne ratez plus aucun match des Guerrières en Ligue Butagaz Énergie.</p>
+      </div>
+      <div class="valeur-card reveal">
+        <span class="valeur-icon">💛</span>
+        <h3>Portez le noir et le jaune</h3>
+        <p>Dans les gradins, partout, à chaque match. Votre présence, c'est le 7e joueur que les Guerrières attendent pour pousser vers le haut.</p>
+      </div>
+      <div class="valeur-card reveal">
+        <span class="valeur-icon">💰</span>
+        <h3>Un tarif imbattable</h3>
+        <p>Jusqu'à 54€ d'économie par rapport aux billets à l'unité. Un engagement sur la saison qui rapporte dès le 10e match.</p>
+      </div>
+      <div class="valeur-card reveal">
+        <span class="valeur-icon">⭐</span>
+        <h3>Statut prioritaire abonné·e</h3>
+        <p>Entrée en avant-première, placement prioritaire, accès aux événements réservés aux membres Club de la saison.</p>
+      </div>
+      <div class="valeur-card reveal">
+        <span class="valeur-icon">🛍️</span>
+        <h3>10% en boutique</h3>
+        <p>Maillots, écharpes, accessoires HBPC — arborez les couleurs noir et jaune à prix abonné·e toute la saison.</p>
+      </div>
+      <div class="valeur-card reveal">
+        <span class="valeur-icon">🤝</span>
+        <h3>Un projet qui a du sens</h3>
+        <p>Formation, solidarité, ancrage local, ambition européenne d'ici 2027 — vous soutenez bien plus qu'une équipe.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABONNEMENT ══════════════════════════════════ -->
+<section class="abonnement-section" id="abonnement">
+  <div class="container">
+    <div class="plans-intro">
+      <div>
+        <div class="section-label">Nos formules</div>
+        <h2 class="section-title reveal">CHOISISSEZ<br><span class="j">VOTRE PLACE.</span></h2>
+      </div>
+      <p class="section-intro reveal" style="max-width:340px;">De la découverte à l'expérience VIP, chaque formule vous place aux côtés des Guerrières. La formule Club est notre offre phare.</p>
+    </div>
+    <div class="plans-grid">
+      <div class="plan-card reveal">
+        <div class="plan-name">Découverte</div>
+        <div class="plan-tagline">Votre première fois au Gymnase des Ambrosis</div>
+        <div class="plan-price"><sup>dès </sup>5<sup>€</sup></div>
+        <div class="plan-price-note">par match · billetterie à l'unité</div>
+        <div class="plan-sep"></div>
+        <ul class="plan-features">
+          <li><span class="fi yes">✓</span> Billet à la séance</li>
+          <li><span class="fi yes">✓</span> Tribune populaire</li>
+          <li><span class="fi no">–</span> Place non garantie</li>
+          <li><span class="fi no">–</span> Pas de fidélité</li>
+          <li><span class="fi no">–</span> Pas de réduction boutique</li>
+        </ul>
+        <a href="https://handball-plandecuques.billetterie-club.fr" class="plan-btn plan-btn-outline" target="_blank">Acheter un billet</a>
+      </div>
+      <div class="plan-card reveal">
+        <div class="plan-name">Confort</div>
+        <div class="plan-tagline">Toute la saison, bien installé·e</div>
+        <div class="plan-price">45<sup>€</sup></div>
+        <div class="plan-price-note">la saison · tribune confort</div>
+        <div class="plan-sep"></div>
+        <ul class="plan-features">
+          <li><span class="fi yes">✓</span> Tous les matchs à domicile</li>
+          <li><span class="fi yes">✓</span> Place numérotée garantie</li>
+          <li><span class="fi yes">✓</span> Programme fidélité (×1)</li>
+          <li><span class="fi no">–</span> Pas de réduction boutique</li>
+          <li><span class="fi no">–</span> Pas de statut Club</li>
+        </ul>
+        <a href="https://handball-plandecuques.fr/contact/" class="plan-btn plan-btn-outline" target="_blank">Choisir Confort</a>
+      </div>
+      <div class="plan-card featured reveal">
+        <div class="plan-best">⚡ Le plus populaire</div>
+        <div class="plan-name">Club</div>
+        <div class="plan-tagline">Le cœur battant du #TeamGuerrières</div>
+        <div class="plan-price">65<sup>€</sup></div>
+        <div class="plan-price-note">la saison · tous les matchs inclus</div>
+        <div class="plan-sep dark"></div>
+        <ul class="plan-features">
+          <li><span class="fi yes">✓</span> Tous les matchs à domicile</li>
+          <li><span class="fi yes">✓</span> Place numérotée premium</li>
+          <li><span class="fi star">★</span> Programme fidélité (×2)</li>
+          <li><span class="fi star">★</span> 10% réduction boutique</li>
+          <li><span class="fi star">★</span> Entrée prioritaire abonné·e·s</li>
+          <li><span class="fi star">★</span> Carte abonnée personnalisée</li>
+          <li><span class="fi star">★</span> Accès événements exclusifs</li>
+        </ul>
+        <a href="https://handball-plandecuques.billetterie-club.fr" class="plan-btn plan-btn-noir" target="_blank">S'abonner — HBPC Club</a>
+        <div class="plan-saving">💡 Économie estimée : 54€ sur la saison</div>
+      </div>
+      <div class="plan-card reveal">
+        <div class="plan-name">VIP</div>
+        <div class="plan-tagline">L'expérience ultime aux côtés des Guerrières</div>
+        <div class="plan-price" style="font-size:2.2rem; padding-top:12px;">Sur<br>demande</div>
+        <div class="plan-price-note">accueil privatisé · sur devis</div>
+        <div class="plan-sep"></div>
+        <ul class="plan-features">
+          <li><span class="fi yes">✓</span> Espace VIP ou loge privée</li>
+          <li><span class="fi yes">✓</span> Restauration incluse</li>
+          <li><span class="fi yes">✓</span> Accès vestiaires après match</li>
+          <li><span class="fi yes">✓</span> Tout le Club + exclusivités</li>
+          <li><span class="fi yes">✓</span> Invité·e accompagnant·e</li>
+        </ul>
+        <a href="https://handball-plandecuques.fr/contact/" class="plan-btn plan-btn-outline" target="_blank">Demander un devis VIP</a>
+      </div>
+    </div>
+    <div class="tarif-box reveal">
+      <div class="tarif-info">
+        <div class="tarif-price">55€</div>
+        <div class="tarif-text">
+          <h4>Tarif Étudiant · Licencié·e HBPC</h4>
+          <p>Formule Club complète — présentation d'un justificatif au 1er match</p>
+        </div>
+      </div>
+      <a href="https://handball-plandecuques.billetterie-club.fr" class="btn-primary" style="font-size:1rem; padding:13px 36px;" target="_blank">Profiter du tarif réduit</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AVANTAGES ═══════════════════════════════════ -->
+<section class="avantages-section" id="avantages">
+  <div class="container">
+    <div class="section-label">Avantages abonné·e Club</div>
+    <h2 class="section-title reveal">TOUT CE QUE<br><span class="j">VOUS GAGNEZ.</span></h2>
+    <div class="avantages-layout">
+      <div class="avantage-list">
+        <div class="avantage-item reveal">
+          <div class="av-num">01</div>
+          <div class="av-text">
+            <h4>Accès à tous les matchs à domicile</h4>
+            <p>17 rencontres au Gymnase des Ambrosis. Votre abonnement couvre toute la saison régulière en Ligue Butagaz Énergie. Plus besoin de chercher un billet la veille du match.</p>
+          </div>
+        </div>
+        <div class="avantage-item reveal">
+          <div class="av-num">02</div>
+          <div class="av-text">
+            <h4>Votre place, rien qu'à vous</h4>
+            <p>Place numérotée garantie saison après saison. Retrouvez les mêmes visages autour de vous, créez des liens qui durent bien au-delà du coup de sifflet final.</p>
+          </div>
+        </div>
+        <div class="avantage-item reveal">
+          <div class="av-num">03</div>
+          <div class="av-text">
+            <h4>Programme fidélité doublé</h4>
+            <p>2 points par match au lieu d'1. Points échangeables contre goodies, places supplémentaires et accès à des événements réservés aux abonné·e·s Club.</p>
+          </div>
+        </div>
+        <div class="avantage-item reveal">
+          <div class="av-num">04</div>
+          <div class="av-text">
+            <h4>10% de réduction en boutique</h4>
+            <p>Maillots, écharpes, accessoires aux couleurs noir et jaune — portez le HBPC à prix abonné·e. Votre fidélité mérite d'être récompensée.</p>
+          </div>
+        </div>
+        <div class="avantage-item reveal">
+          <div class="av-num">05</div>
+          <div class="av-text">
+            <h4>Entrée prioritaire avant chaque match</h4>
+            <p>Les abonné·e·s Club entrent en premier. Installez-vous, respirez l'ambiance, vivez les Guerrières avant même l'échauffement.</p>
+          </div>
+        </div>
+        <div class="avantage-item reveal">
+          <div class="av-num">06</div>
+          <div class="av-text">
+            <h4>Carte abonnée personnalisée</h4>
+            <p>Votre identité officielle dans la Team Guerrières. Un coup de badge et vous activez tous vos avantages Club pour toute la saison.</p>
+          </div>
+        </div>
+      </div>
+      <div class="calcul-box reveal">
+        <div class="calcul-header">🧮 Calculateur d'économies</div>
+        <div class="calcul-body">
+          <div class="calc-row"><span class="calc-lbl">Billet standard (moyen)</span><span class="calc-val">7€ / match</span></div>
+          <div class="calc-row"><span class="calc-lbl">Matchs à domicile</span><span class="calc-val">17 matchs</span></div>
+          <div class="calc-row"><span class="calc-lbl">Coût sans abonnement</span><span class="calc-val">119€</span></div>
+          <div class="calc-row"><span class="calc-lbl">Abonnement HBPC Club</span><span class="calc-val" style="color:var(--jaune)">65€</span></div>
+        </div>
+        <div class="calc-total">
+          <span class="calc-total-lbl">Vous économisez</span>
+          <span class="calc-total-val">54€</span>
+        </div>
+        <div class="fidelite-note">⭐ Bonus : vos points fidélité sont doublés à chaque match. Plus vous venez soutenir les Guerrières, plus vous gagnez.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TÉMOIGNAGES ════════════════════════════════ -->
+<section class="temoignages-section" id="temoignages">
+  <div class="container">
+    <div class="section-label">Ce qu'ils en disent</div>
+    <h2 class="section-title reveal">LA PAROLE AUX<br><span class="j">#TEAMGUERRIÈRES.</span></h2>
+    <div class="temo-grid">
+      <div class="temo-vedette reveal">
+        <div>
+          <div class="temo-stars">★★★★★</div>
+          <p class="temo-text">"Depuis que je suis abonnée, je n'imagine plus vivre une saison sans. C'est ma place, ce sont mes Guerrières. On souffre ensemble, on gagne ensemble. Quand elles rentrent sur le parquet du Gymnase des Ambrosis et que la salle explose — ça, ça ne s'explique pas. Ça se vit."</p>
+        </div>
+        <div class="temo-author" style="flex-direction:column; align-items:flex-start; gap:10px;">
+          <div style="display:flex; align-items:center; gap:14px">
+            <div class="temo-avatar">ML</div>
+            <div>
+              <div class="temo-name">Marie-Louise D.</div>
+              <div class="temo-since">Abonnée depuis 4 saisons · Virage supporters</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="temo-card reveal">
+        <div class="temo-stars">★★★★★</div>
+        <p class="temo-text">"65€ pour toute la saison en Ligue Butagaz Énergie, c'est imbattable. Je suis les Guerrières depuis la N1 — les voir au plus haut niveau depuis les gradins, c'est une fierté."</p>
+        <div class="temo-author">
+          <div class="temo-avatar" style="background:#1c3a5c; color:#fff">SP</div>
+          <div><div class="temo-name">Sophie P.</div><div class="temo-since">Abonnée depuis 2 saisons · Tribune Club</div></div>
+        </div>
+      </div>
+      <div class="temo-card reveal">
+        <div class="temo-stars">★★★★★</div>
+        <p class="temo-text">"J'emmène ma fille à chaque match. Les joueuses la reconnaissent maintenant. Elle a sa place, ses rituels. L'abonnement HBPC, c'est lui offrir une passion pour la vie."</p>
+        <div class="temo-author">
+          <div class="temo-avatar" style="background:#2a4a2a; color:#fff">RB</div>
+          <div><div class="temo-name">Romain B.</div><div class="temo-since">Abonné depuis 3 saisons · Tribune famille</div></div>
+        </div>
+      </div>
+      <div class="temo-card reveal">
+        <div class="temo-stars">★★★★★</div>
+        <p class="temo-text">"Étudiante à 55€ la saison, c'était évident. Je rencontre des gens formidables, le staff nous connaît. Je me sens vraiment partie du projet HBPC."</p>
+        <div class="temo-author">
+          <div class="temo-avatar" style="background:#3a1c4a; color:#fff">CL</div>
+          <div><div class="temo-name">Camille L.</div><div class="temo-since">Abonnée étudiante · 1ère saison</div></div>
+        </div>
+      </div>
+      <div class="temo-card reveal">
+        <div class="temo-stars">★★★★★</div>
+        <p class="temo-text">"Ce qui me touche, c'est l'ambition. Elles visent l'Europe d'ici 2027, et nous on est là pour les pousser. Mon abonnement, c'est ma façon de participer à ce projet."</p>
+        <div class="temo-author">
+          <div class="temo-avatar" style="background:#4a3010; color:#fff">JD</div>
+          <div><div class="temo-name">Jean-Paul D.</div><div class="temo-since">Abonné depuis 6 saisons · Supporter historique</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPÉRIENCE ══════════════════════════════════ -->
+<section class="experience-section" id="experience">
+  <div class="container">
+    <div class="section-label">L'expérience matchday</div>
+    <h2 class="section-title reveal">UN SOIR DE MATCH<br><span class="j">AU GYMNASE DES AMBROSIS.</span></h2>
+    <div class="exp-grid">
+      <div class="exp-left reveal">
+        <h3>Du vestiaire aux gradins,<br>vous en faites partie.</h3>
+        <p>L'ambiance se crée bien avant le coup d'envoi. En tant qu'abonné·e Club, vous entrez en priorité, retrouvez votre place, et vous êtes là quand les Guerrières font leur entrée sur le parquet. Ces instants-là ne s'achètent pas à l'unité — ils s'accumulent saison après saison.</p>
+        <a href="#abonnement" class="btn-primary">Rejoindre la Team Guerrières</a>
+      </div>
+      <div class="exp-right">
+        <div class="exp-perk reveal"><span class="exp-perk-icon">🏟️</span><div><h4>Entrée prioritaire abonnées</h4><p>Votre flux d'entrée dédié. Installez-vous avant l'affluence et profitez de l'atmosphère qui monte.</p></div></div>
+        <div class="exp-perk reveal"><span class="exp-perk-icon">📍</span><div><h4>Votre place, saison après saison</h4><p>Les mêmes visages à côté de vous, les mêmes rituels — une vraie communauté qui se construit match après match.</p></div></div>
+        <div class="exp-perk reveal"><span class="exp-perk-icon">🟡</span><div><h4>Le noir et le jaune dans les tribunes</h4><p>Vous formez la colonne vertébrale de notre ambiance. Les Guerrières jouent aussi pour vous.</p></div></div>
+        <div class="exp-perk reveal"><span class="exp-perk-icon">🤙</span><div><h4>Un lien avec les joueuses</h4><p>Elles vous reconnaissent. Vous faites partie du décor — et c'est un décor qui compte pour elles.</p></div></div>
+        <div class="exp-perk reveal"><span class="exp-perk-icon">🎁</span><div><h4>Événements exclusifs abonné·e·s</h4><p>Meet &amp; greet, journées portes ouvertes, Med'Hand Cup, coulisses — réservés aux nôtres.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══════════════════════════════════════════ -->
+<section class="cta-section" id="cta">
+  <div class="cta-content">
+    <div class="cta-label">Saison 2025–2026 · Plan-de-Cuques · Ligue Butagaz Énergie</div>
+    <div class="urgency-band">
+      <span style="width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,0.4);display:inline-block;"></span>
+      Ouverture des abonnements — Places limitées
+    </div>
+    <h2>PRÊTE À REJOINDRE<br>LES GUERRIÈRES ?</h2>
+    <p>Une saison entière aux côtés de nos Guerrières en Ligue Butagaz Énergie. Moins de 4€ par match. Votre place vous attend au Gymnase des Ambrosis.</p>
+    <a href="https://handball-plandecuques.billetterie-club.fr" class="btn-noir" target="_blank">S'abonner dès maintenant</a>
+    <div class="cta-note">Paiement sécurisé · Carte abonnée envoyée à domicile · Tarif étudiant sur justificatif</div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══════════════════════════════════════════ -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-label">Questions fréquentes</div>
+    <h2 class="section-title reveal">ON RÉPOND<br><span class="j">À TOUT.</span></h2>
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <div class="faq-q">Quand commence la saison 2025–2026 ? <span class="faq-q-icon">+</span></div>
+        <div class="faq-a">La saison démarre en septembre 2025. Le calendrier complet des matchs à domicile au Gymnase des Ambrosis sera publié en août. En vous abonnant maintenant, vous bénéficiez des tarifs actuels et d'un accès prioritaire au choix de votre placement.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Je ne peux pas venir à tous les matchs — l'abonnement vaut-il quand même le coup ? <span class="faq-q-icon">+</span></div>
+        <div class="faq-a">Absolument. Dès 10 matchs assistés sur 17, vous êtes déjà gagnant·e par rapport aux billets à l'unité. Et votre carte abonnée reste valable toute la saison pour la réduction boutique et les points fidélité doublés.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Comment bénéficier du tarif étudiant ou licencié·e HBPC ? <span class="faq-q-icon">+</span></div>
+        <div class="faq-a">Sélectionnez le tarif réduit (55€) lors de votre abonnement en ligne, puis présentez votre carte étudiante ou votre licence HBPC à la caisse lors de votre premier match. Simple, sans démarche supplémentaire.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Puis-je choisir ma place dans le Gymnase des Ambrosis ? <span class="faq-q-icon">+</span></div>
+        <div class="faq-a">Oui ! Les abonné·e·s Club bénéficient d'un accès prioritaire à la sélection de placement. Vous choisissez votre siège en ligne lors de la finalisation de l'abonnement, par ordre d'inscription — raison de plus pour ne pas attendre.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Comment fonctionne le programme fidélité double ? <span class="faq-q-icon">+</span></div>
+        <div class="faq-a">À chaque match où vous badgez votre carte abonnée, vous cumulez 2 points au lieu d'1. Ces points sont échangeables contre des goodies HBPC, des places supplémentaires ou des accès à des événements exclusifs tout au long de la saison.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Que se passe-t-il si un match est annulé ou reporté ? <span class="faq-q-icon">+</span></div>
+        <div class="faq-a">En cas d'annulation définitive d'un match, une compensation est prévue : report de la rencontre ou crédit fidélité. Les conditions détaillées sont précisées dans les conditions générales de vente jointes à l'abonnement.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">L'offre VIP — comment ça marche ? <span class="faq-q-icon">+</span></div>
+        <div class="faq-a">L'offre VIP est entièrement personnalisée : nombre de personnes, services souhaités, restauration, accès vestiaires. Contactez-nous via le formulaire sur handball-plandecuques.fr pour recevoir un devis sur mesure.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Comment se déroule le paiement et la réception de la carte abonnée ? <span class="faq-q-icon">+</span></div>
+        <div class="faq-a">Paiement sécurisé en ligne par carte bancaire. Votre carte abonnée personnalisée aux couleurs du HBPC vous est envoyée par courrier avant le premier match de la saison. Un paiement en 2 fois est disponible pour la formule Club.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════ -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo-text"><em>HB</em>PC</div>
+      <div class="footer-sub">Handball Plan-de-Cuques</div>
+      <p>Club professionnel de handball féminin évoluant en Ligue Butagaz Énergie. Fondé en 1992. Ancré à Plan-de-Cuques, ambitieux pour l'élite française et l'Europe.</p>
+      <div class="footer-socials">
+        <a href="https://www.facebook.com/handballplandecuques" class="social-btn" target="_blank">FB</a>
+        <a href="https://www.instagram.com/Handballplandecuques/" class="social-btn" target="_blank">IG</a>
+        <a href="https://www.linkedin.com/company/handball-plan-de-cuques/" class="social-btn" target="_blank">LI</a>
+        <a href="https://www.tiktok.com/@hbplandecuques" class="social-btn" target="_blank">TK</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Le Club</h5>
+      <a href="https://handball-plandecuques.fr/le-club/" target="_blank">Histoire du club</a>
+      <a href="https://handball-plandecuques.fr/les-guerrieres/" target="_blank">Les Guerrières</a>
+      <a href="https://handball-plandecuques.fr/sport-sante/" target="_blank">Sport Santé</a>
+      <a href="https://handball-plandecuques.fr/nos-partenaires/" target="_blank">Nos partenaires</a>
+    </div>
+    <div class="footer-col">
+      <h5>Matchs &amp; Billets</h5>
+      <a href="https://handball-plandecuques.fr/calendrier/" target="_blank">Calendrier</a>
+      <a href="https://handball-plandecuques.billetterie-club.fr" target="_blank">Billetterie</a>
+      <a href="#abonnement">Abonnements</a>
+      <a href="https://handball-plandecuques.fr/actualites/" target="_blank">Actualités</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <a href="https://handball-plandecuques.fr/contact/" target="_blank">Nous contacter</a>
+      <a href="https://handball-plandecuques.fr/nos-partenaires/" target="_blank">Devenir partenaire</a>
+      <a href="https://handball-plandecuques.fr/contact/" target="_blank">Bénévolat</a>
+      <a href="https://handball-plandecuques.fr/contact/" target="_blank">Espace VIP</a>
+      <p style="margin-top:16px; font-size:0.82rem; color:rgba(255,255,255,0.3); line-height:1.5;">Av. Pasteur<br>13380 Plan-de-Cuques</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Handball Plan-de-Cuques · Tous droits réservés</span>
+    <a href="https://agence-klak.fr" target="_blank">Conception KLAK</a>
+  </div>
+</footer>
+
+<script>
+  const stickyBar = document.getElementById('stickyBar');
+  window.addEventListener('scroll', () => {
+    stickyBar.classList.toggle('visible', window.scrollY > 80);
+  });
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const siblings = Array.from(el.parentElement?.children || []);
+        const idx = siblings.indexOf(el);
+        el.style.transitionDelay = Math.min(idx * 90, 360) + 'ms';
+        el.classList.add('visible');
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.10, rootMargin: '0px 0px -50px 0px' });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
